@@ -13,13 +13,15 @@ import { ReactComponent as FileIcon } from '~/icons/file.svg'
 import { ReactComponent as MicrphoneIcon } from '~/icons/microphone.svg'
 import { ReactComponent as LinkIcon } from '~/icons/link.svg'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { webviewWindow } from '@tauri-apps/api'
 import * as keepAwake from 'tauri-plugin-keepawake-api'
 import AdvancedTranscribe from '~/components/AdvancedTranscribe'
 
 export default function Home() {
-	const { t } = useTranslation()
-	const vm = viewModel()
+        const { t } = useTranslation()
+        const vm = viewModel()
+        const navigate = useNavigate()
 
 	async function showWindow() {
 		const currentWindow = webviewWindow.getCurrentWebviewWindow()
@@ -143,17 +145,22 @@ export default function Home() {
 							</a>
 						</div>
 					)}
-					{(vm.segments || vm.loading) && (
-						<div className="flex flex-col mt-5 items-center w-[90%] max-w-[1000px] h-[84vh] m-auto">
-							<TextArea
-								setSegments={vm.transcriptTab == 'transcript' ? vm.setSegments : vm.setSummarizeSegments}
-								file={vm.files?.[0]}
-								placeholder={t('common.transcript-will-displayed-shortly')}
-								segments={vm.transcriptTab == 'transcript' ? vm.segments : vm.summarizeSegments}
-								readonly={vm.loading}
-							/>
-						</div>
-					)}
+                                        {(vm.segments || vm.loading) && (
+                                                <div className="flex flex-col mt-5 items-center w-[90%] max-w-[1000px] h-[84vh] m-auto">
+                                                        <TextArea
+                                                                setSegments={vm.transcriptTab == 'transcript' ? vm.setSegments : vm.setSummarizeSegments}
+                                                                file={vm.files?.[0]}
+                                                                placeholder={t('common.transcript-will-displayed-shortly')}
+                                                                segments={vm.transcriptTab == 'transcript' ? vm.segments : vm.summarizeSegments}
+                                                                readonly={vm.loading}
+                                                        />
+                                                        <button
+                                                                onMouseDown={() => navigate('/editor', { state: { transcript: vm.segments, videoSrc: vm.files?.[0] ? vm.files[0].path : '' } })}
+                                                                className="btn btn-secondary btn-sm mt-2">
+                                                                Edit Subtitles
+                                                        </button>
+                                                </div>
+                                        )}
 				</>
 			)}
 
