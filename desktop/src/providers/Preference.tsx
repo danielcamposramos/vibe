@@ -64,13 +64,16 @@ export interface Preference {
 	setFfmpegOptions: ModifyState<FfmpegOptions>
 	resetOptions: () => void
 	enableSubtitlesPreset: () => void
-	ytDlpVersion: string | null
-	setYtDlpVersion: ModifyState<string | null>
-	shouldCheckYtDlpVersion: boolean
-	setShouldCheckYtDlpVersion: ModifyState<boolean>
+        ytDlpVersion: string | null
+        setYtDlpVersion: ModifyState<string | null>
+        shouldCheckYtDlpVersion: boolean
+        setShouldCheckYtDlpVersion: ModifyState<boolean>
 
-	advancedTranscribeOptions: AdvancedTranscribeOptions
-	setAdvancedTranscribeOptions: ModifyState<AdvancedTranscribeOptions>
+        subtitleAutoSaveInterval: number
+        setSubtitleAutoSaveInterval: ModifyState<number>
+
+        advancedTranscribeOptions: AdvancedTranscribeOptions
+        setAdvancedTranscribeOptions: ModifyState<AdvancedTranscribeOptions>
 }
 
 // Create the context
@@ -128,8 +131,9 @@ const defaultOptions = {
 	diarizeThreshold: 0.5,
 	storeRecordInDocuments: true,
 	llmConfig: defaultOllamaConfig(),
-	ytDlpVersion: null,
-	shouldCheckYtDlpVersion: true,
+        ytDlpVersion: null,
+        shouldCheckYtDlpVersion: true,
+        subtitleAutoSaveInterval: 1000,
 }
 
 // Preference provider component
@@ -161,12 +165,13 @@ export function PreferenceProvider({ children }: { children: ReactNode }) {
 	const [storeRecordInDocuments, setStoreRecordInDocuments] = useLocalStorage('prefs_store_record_in_documents', defaultOptions.storeRecordInDocuments)
 	const [llmConfig, setLlmConfig] = useLocalStorage<LlmConfig>('prefs_llm_config', defaultOptions.llmConfig)
 	const [ytDlpVersion, setYtDlpVersion] = useLocalStorage<string | null>('prefs_ytdlp_version', null)
-	const [shouldCheckYtDlpVersion, setShouldCheckYtDlpVersion] = useLocalStorage<boolean>('prefs_should_check_ytdlp_version', true)
-	const [advancedTranscribeOptions, setAdvancedTranscribeOptions] = useLocalStorage<AdvancedTranscribeOptions>('prefs_advanced_transcribe_options', {
-		includeSubFolders: false,
-		saveNextToAudioFile: true,
-		skipIfExists: true,
-	})
+        const [shouldCheckYtDlpVersion, setShouldCheckYtDlpVersion] = useLocalStorage<boolean>('prefs_should_check_ytdlp_version', true)
+        const [subtitleAutoSaveInterval, setSubtitleAutoSaveInterval] = useLocalStorage<number>('prefs_subtitle_autosave_interval', 1000)
+        const [advancedTranscribeOptions, setAdvancedTranscribeOptions] = useLocalStorage<AdvancedTranscribeOptions>('prefs_advanced_transcribe_options', {
+                includeSubFolders: false,
+                saveNextToAudioFile: true,
+                skipIfExists: true,
+        })
 
 	useEffect(() => {
 		setIsFirstRun(false)
@@ -213,11 +218,12 @@ export function PreferenceProvider({ children }: { children: ReactNode }) {
 		setFfmpegOptions(defaultOptions.ffmpegOptions)
 		setRecognizeSpeakers(defaultOptions.recognizeSpeakers)
 		setMaxSpeakers(defaultOptions.maxSpeakers)
-		setDiarizeThreshold(defaultOptions.diarizeThreshold)
-		setStoreRecordInDocuments(defaultOptions.storeRecordInDocuments)
-		setLlmConfig(defaultOptions.llmConfig)
-		message(i18n.t('common.success-action'))
-	}
+                setDiarizeThreshold(defaultOptions.diarizeThreshold)
+                setStoreRecordInDocuments(defaultOptions.storeRecordInDocuments)
+                setLlmConfig(defaultOptions.llmConfig)
+                setSubtitleAutoSaveInterval(defaultOptions.subtitleAutoSaveInterval)
+                message(i18n.t('common.success-action'))
+        }
 
 	function enableSubtitlesPreset() {
 		setModelOptions({ ...preference.modelOptions, word_timestamps: true, max_sentence_len: 32 })
@@ -270,10 +276,12 @@ export function PreferenceProvider({ children }: { children: ReactNode }) {
 		ytDlpVersion,
 		setYtDlpVersion,
 		shouldCheckYtDlpVersion,
-		setShouldCheckYtDlpVersion,
-		advancedTranscribeOptions,
-		setAdvancedTranscribeOptions,
-	}
+                setShouldCheckYtDlpVersion,
+                subtitleAutoSaveInterval,
+                setSubtitleAutoSaveInterval,
+                advancedTranscribeOptions,
+                setAdvancedTranscribeOptions,
+        }
 
 	return <PreferenceContext.Provider value={preference}>{children}</PreferenceContext.Provider>
 }
