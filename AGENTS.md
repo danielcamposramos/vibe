@@ -5,6 +5,7 @@
 - Keep the package requirements documented in `docs/building.md` up to date.
 - Whenever adding or updating system dependencies, list them here and update the project files accordingly.
 - Every time you find a missing dependency or package, include it at all appropriate places after success, including but not limited to this file.
+- Whenever adding system dependencies, list them in this file and update the docs accordingly.
 
 ## Required system packages
 - ffmpeg
