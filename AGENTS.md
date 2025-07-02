@@ -2,3 +2,23 @@
 
 - Always run `npm run lint` and `cargo test` before committing, capturing the last 20 lines of output.
 - If a command fails due to missing dependencies or network problems, mention this in your PR summary.
+- Keep the package requirements documented in `docs/building.md` up to date.
+- Whenever adding system dependencies, list them in this file and update the docs accordingly.
+
+## Required system packages
+- ffmpeg
+- libopenblas-dev
+- pkg-config
+- build-essential
+- libglib2.0-dev
+- libgtk-3-dev
+- libwebkit2gtk-4.1-dev
+- libsoup-3.0-dev
+- libjavascriptcoregtk-4.1-dev
+- clang
+- cmake
+- libssl-dev
+- libavutil-dev
+- libavformat-dev
+- libavfilter-dev
+- libavdevice-dev
