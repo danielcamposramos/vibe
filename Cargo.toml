@@ -3,8 +3,8 @@ members = ["core", "desktop/src-tauri"]
 resolver = "2"
 
 [patch.crates-io]
-ort = { git = "https://github.com/pykeio/ort", rev = "d1ebde95d386513fea836593815e8f86f7b96a85", default-features = false, features = ["load-dynamic"] }
-ort-sys = { git = "https://github.com/pykeio/ort", rev = "d1ebde95d386513fea836593815e8f86f7b96a85", default-features = false }
+ort = { git = "https://github.com/pykeio/ort", rev = "123c449e9a4a3249d92ac16262b08ab11eda5668", default-features = false, features = ["load-dynamic"] }
+ort-sys = { git = "https://github.com/pykeio/ort", rev = "123c449e9a4a3249d92ac16262b08ab11eda5668", default-features = false }
 
 [workspace.dependencies]
 eyre = { git = "https://github.com/thewh1teagle/eyre", branch = "feat/report-serialize-backtrace", features = [

@@ -2349,6 +2349,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "half"
+version = "2.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "459196ed295495a68f7d7fe1d84f6c4b7ff0e21fe3017b2f283c6fac3ad803c9"
+dependencies = [
+ "cfg-if",
+ "crunchy",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4001,8 +4011,8 @@ dependencies = [
 
 [[package]]
 name = "ort"
-version = "2.0.0-rc.10"
-source = "git+https://github.com/pykeio/ort?rev=d1ebde95d386513fea836593815e8f86f7b96a85#d1ebde95d386513fea836593815e8f86f7b96a85"
+version = "2.0.0-rc.9"
+source = "git+https://github.com/pykeio/ort?rev=123c449e9a4a3249d92ac16262b08ab11eda5668#123c449e9a4a3249d92ac16262b08ab11eda5668"
 dependencies = [
  "libloading 0.8.5",
  "ndarray",
@@ -4013,8 +4023,8 @@ dependencies = [
 
 [[package]]
 name = "ort-sys"
-version = "2.0.0-rc.10"
-source = "git+https://github.com/pykeio/ort?rev=d1ebde95d386513fea836593815e8f86f7b96a85#d1ebde95d386513fea836593815e8f86f7b96a85"
+version = "2.0.0-rc.9"
+source = "git+https://github.com/pykeio/ort?rev=123c449e9a4a3249d92ac16262b08ab11eda5668#123c449e9a4a3249d92ac16262b08ab11eda5668"
 dependencies = [
  "flate2",
  "pkg-config",
