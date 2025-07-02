@@ -43,6 +43,7 @@
 -   📂 Batch transcribe multiple files!
 -   📝 Support `SRT`, `VTT`, `TXT`, `HTML`, `PDF`, `JSON`, `DOCX` formats
 -   👀 Realtime preview
+-   ✏️ Built-in subtitle editor with video preview and quick timestamp controls
 -   ✨ Summarize transcripts: Get quick, multilingual summaries using the Claude API
 -   🧠 Ollama support: Do local AI analysis and batch summaries with Ollama
 -   🌐 Translate to English from any language
@@ -97,6 +98,7 @@ In addition you can add translation to [Vibe website](https://thewh1teagle.githu
 # Docs 📄
 
 see [Vibe Docs](https://github.com/thewh1teagle/vibe/tree/main/docs)
+Check the [Subtitle Editor guide](docs/editor.md) to learn how to refine captions.
 
 # I want to know more!
 
@@ -123,3 +125,4 @@ Thanks for [openai.com](https://openai.com/) for their amazing [Whisper model](h
 Thanks for [github.com](https://github.com/) for their support in open source projects, providing infastructure completely free.
 
 And for all the amazing open source frameworks and libraries which this project uses...
+Forked from Vibe, borrowed from SubtitleEditor and stitched together by Codex with Daniel Ramos's EchoSystems creative line and guidance.
