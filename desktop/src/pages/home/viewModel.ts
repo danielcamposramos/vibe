@@ -190,7 +190,7 @@ export function viewModel() {
 	}
 
 	async function loadAudioDevices() {
-		let newDevices = await invoke<AudioDevice[]>('get_audio_devices')
+                const newDevices = await invoke<AudioDevice[]>('get_audio_devices')
 		const defaultInput = newDevices.find((d) => d.isDefault && d.isInput)
 		const defaultOutput = newDevices.find((d) => d.isDefault && !d.isInput)
 		if (defaultInput) {
@@ -324,7 +324,7 @@ export function viewModel() {
 		setTranscriptTab('transcript')
 
 		setIsRecording(true)
-		let devices: AudioDevice[] = []
+                const devices: AudioDevice[] = []
 		if (inputDevice) {
 			devices.push(inputDevice)
 		}
@@ -348,7 +348,7 @@ export function viewModel() {
 		setLoading(true)
 		abortRef.current = false
 
-		var newSegments: transcript.Segment[] = []
+                let newSegments: transcript.Segment[] = []
 		try {
 			const modelPath = preferenceRef.current.modelPath
 			await invoke('load_model', { modelPath, gpuDevice: preferenceRef.current.gpuDevice, useGpu: preferenceRef.current.useGpu })

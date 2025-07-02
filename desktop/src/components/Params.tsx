@@ -79,8 +79,7 @@ export default function ModelOptions({ options, setOptions }: ParamsProps) {
 		}
 	}
 
-	//@ts-ignore
-	async function onRecognizeSpeakerChange(event: ChangeEvent<HTMLInputElement>) {
+        async function onRecognizeSpeakerChange(event: ChangeEvent<HTMLInputElement>) {
 		const enabled = event.target.checked
 		if (enabled) {
 			askOrEnableSpeakerRecognition()
