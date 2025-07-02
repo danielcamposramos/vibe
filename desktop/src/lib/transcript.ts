@@ -191,3 +191,43 @@ export function parseText(content: string): Segment[] {
                 .filter((l) => l.trim())
                 .map((text, i) => ({ start: i * 2, stop: i * 2 + 2, text: text.trim() }))
 }
+
+export type SegmentFormat = 'srt' | 'vtt' | 'json' | 'text'
+
+export function serializeSegments(
+        segments: Segment[],
+        format: SegmentFormat,
+        speakerPrefix = 'Speaker'
+): string {
+        switch (format) {
+                case 'srt':
+                        return asSrt(segments, speakerPrefix)
+                case 'vtt':
+                        return asVtt(segments, speakerPrefix)
+                case 'json':
+                        return asJson(segments)
+                default:
+                        return asText(segments, speakerPrefix)
+        }
+}
+
+export function serializeTranscript(
+        transcript: Transcript,
+        format: SegmentFormat,
+        speakerPrefix = 'Speaker'
+) {
+        return serializeSegments(transcript.segments, format, speakerPrefix)
+}
+
+export function parseByFormat(content: string, format: SegmentFormat): Segment[] {
+        switch (format) {
+                case 'srt':
+                        return parseSrt(content)
+                case 'vtt':
+                        return parseVtt(content)
+                case 'json':
+                        return parseJson(content)
+                default:
+                        return parseText(content)
+        }
+}

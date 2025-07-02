@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { basename } from '@tauri-apps/api/path'
 import * as dialog from '@tauri-apps/plugin-dialog'
 import * as fs from '@tauri-apps/plugin-fs'
@@ -9,6 +10,7 @@ import { Segment, asJson, asSrt, asText, asVtt, parseJson, parseSrt, parseText, 
 
 export default function ConvertPage() {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const [segments, setSegments] = useState<Segment[] | null>(null)
     const [file, setFile] = useState<{ path: string; name: string } | null>(null)
     const [output, setOutput] = useState<TextFormat>('srt')
@@ -52,6 +54,12 @@ export default function ConvertPage() {
         }
     }
 
+    function openEditor() {
+        if (segments) {
+            navigate('/editor', { state: { transcript: segments, file } })
+        }
+    }
+
     return (
         <Layout>
             <div className="flex flex-col gap-3 w-[300px] m-auto">
@@ -62,6 +70,9 @@ export default function ConvertPage() {
                 <FormatSelect format={output} setFormat={setOutput} />
                 <button className="btn btn-primary" disabled={!segments} onMouseDown={convert}>
                     {t('common.save-transcript')}
+                </button>
+                <button className="btn btn-secondary" disabled={!segments} onMouseDown={openEditor}>
+                    Edit in Editor
                 </button>
             </div>
         </Layout>

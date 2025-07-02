@@ -1,6 +1,15 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
-import { Segment, Transcript } from '~/lib/transcript'
-import { cx } from '~/lib/utils'
+import { Segment, Transcript, serializeSegments, SegmentFormat } from '~/lib/transcript'
+import { cx, NamedPath, openPath } from '~/lib/utils'
+import FormatSelect, { TextFormat, formatExtensions } from './FormatSelect'
+import * as dialog from '@tauri-apps/plugin-dialog'
+import * as fs from '@tauri-apps/plugin-fs'
+import { invoke } from '@tauri-apps/api/core'
+import toast from 'react-hot-toast'
+import { path } from '@tauri-apps/api'
+import { toDocx } from '~/lib/docx'
+import { usePreferenceProvider } from '~/providers/Preference'
+import { ReactComponent as DownloadIcon } from '~/icons/download.svg'
 
 export interface SubtitleEditorProps {
     transcript: Transcript
@@ -8,6 +17,7 @@ export interface SubtitleEditorProps {
     videoSrc: string
     autoSave?: boolean
     onSave?: (t: Transcript) => void
+    file?: NamedPath
 }
 
 interface EditorContextValue {
@@ -155,16 +165,61 @@ function EditorSegment({ segment, index }: { segment: Segment; index: number }) 
     )
 }
 
-export default function SubtitleEditor({ transcript, setTranscript, videoSrc, autoSave = true, onSave }: SubtitleEditorProps) {
+export default function SubtitleEditor({ transcript, setTranscript, videoSrc, autoSave = true, onSave, file }: SubtitleEditorProps) {
     const videoRef = useRef<HTMLVideoElement>(null)
+    const preference = usePreferenceProvider()
     const [segments, setSegments] = useState<Segment[]>(transcript.segments)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [auto, setAuto] = useState(autoSave)
+    const [output, setOutput] = useState<TextFormat>('srt')
     const historyRef = useRef<Segment[][]>([])
 
     function updateSegments(newSegs: Segment[]) {
         setSegments(newSegs)
         historyRef.current.push(newSegs)
+    }
+
+    async function saveToFile() {
+        const ext = formatExtensions[output].slice(1)
+        const defaultSrc = file?.path ?? `subtitle.${ext}`
+        const defaultPath = await invoke<NamedPath>('get_save_path', { srcPath: defaultSrc, targetExt: ext })
+        const savePath = await dialog.save({
+            filters: [{ name: '', extensions: [ext] }],
+            canCreateDirectories: true,
+            defaultPath: defaultPath.path,
+        })
+        if (savePath) {
+            if (output === 'docx') {
+                const fileName = await path.basename(savePath)
+                const doc = await toDocx(fileName, segments, preference.textAreaDirection)
+                const arrayBuffer = await doc.arrayBuffer()
+                const buffer = new Uint8Array(arrayBuffer)
+                await fs.writeFile(savePath, buffer)
+            } else {
+                const text = serializeSegments(segments, output as SegmentFormat, 'Speaker')
+                await fs.writeTextFile(savePath, text)
+            }
+            toast(
+                (mytoast) => (
+                    <span>
+                        {`Saved Successfully!`}
+                        <button
+                            onClick={() => {
+                                toast.dismiss(mytoast.id)
+                                openPath({ name: '', path: savePath })
+                            }}
+                        >
+                            <div className="link link-primary ms-5">{defaultPath?.name}</div>
+                        </button>
+                    </span>
+                ),
+                {
+                    duration: 5000,
+                    position: 'bottom-center',
+                    iconTheme: { primary: '#000', secondary: '#fff' },
+                }
+            )
+        }
     }
 
     useEffect(() => {
@@ -175,9 +230,9 @@ export default function SubtitleEditor({ transcript, setTranscript, videoSrc, au
         if (!auto) return
         const id = setTimeout(() => {
             onSave?.({ ...transcript, segments })
-        }, 1000)
+        }, preference.subtitleAutoSaveInterval)
         return () => clearTimeout(id)
-    }, [segments, auto])
+    }, [segments, auto, preference.subtitleAutoSaveInterval])
 
     useEffect(() => {
         function handler(e: KeyboardEvent) {
@@ -190,6 +245,7 @@ export default function SubtitleEditor({ transcript, setTranscript, videoSrc, au
                 }
             } else if (e.ctrlKey && e.key.toLowerCase() === 's') {
                 e.preventDefault()
+                saveToFile()
                 onSave?.({ ...transcript, segments })
             }
         }
@@ -218,6 +274,12 @@ export default function SubtitleEditor({ transcript, setTranscript, videoSrc, au
                     <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} />
                     <span>autosave</span>
                 </label>
+                <div className="flex items-center gap-2">
+                    <FormatSelect format={output} setFormat={setOutput} />
+                    <button onMouseDown={saveToFile} className="btn btn-square">
+                        <DownloadIcon className="w-6 h-6" />
+                    </button>
+                </div>
                 <div className="flex flex-col gap-2 overflow-y-auto max-h-[60vh]">
                     {segments.map((seg, i) => (
                         <div key={i} className={cx(i === currentIndex && 'bg-base-200 p-1 rounded')}>
