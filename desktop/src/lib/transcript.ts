@@ -111,5 +111,83 @@ export function asText(segments: Segment[], speakerPrefix = 'Speaker') {
 }
 
 export function asJson(segments: Segment[]) {
-	return JSON.stringify(segments, null, 4)
+        return JSON.stringify(segments, null, 4)
+}
+
+function parseTimestampStr(value: string) {
+        const [hms, ms] = value.trim().split(/[.,]/)
+        const [h, m, s] = hms.split(':').map(Number)
+        const millis = parseInt(ms ?? '0')
+        return h * 3600 + m * 60 + s + millis / 1000
+}
+
+export function parseSrt(content: string): Segment[] {
+        const lines = content.replace(/\r/g, '').split(/\n/)
+        const segments: Segment[] = []
+        let i = 0
+        while (i < lines.length) {
+                if (!lines[i].trim()) {
+                        i++
+                        continue
+                }
+                i++ // skip index line
+                const time = lines[i++]?.trim()
+                if (!time) break
+                const [start, end] = time.split('-->')
+                let text = ''
+                while (i < lines.length && lines[i].trim() !== '') {
+                        text += (text ? '\n' : '') + lines[i]
+                        i++
+                }
+                segments.push({ start: parseTimestampStr(start), stop: parseTimestampStr(end), text })
+                while (i < lines.length && !lines[i].trim()) i++
+        }
+        return segments
+}
+
+export function parseVtt(content: string): Segment[] {
+        const lines = content.replace(/\r/g, '').split(/\n/)
+        const segments: Segment[] = []
+        let i = 0
+        if (lines[0]?.startsWith('WEBVTT')) {
+                i++
+        }
+        while (i < lines.length) {
+                if (!lines[i].trim()) {
+                        i++
+                        continue
+                }
+                const time = lines[i++]
+                const [start, end] = time.split('-->')
+                let text = ''
+                while (i < lines.length && lines[i].trim() !== '') {
+                        text += (text ? '\n' : '') + lines[i]
+                        i++
+                }
+                segments.push({ start: parseTimestampStr(start), stop: parseTimestampStr(end), text })
+                while (i < lines.length && !lines[i].trim()) i++
+        }
+        return segments
+}
+
+export function parseJson(content: string): Segment[] {
+        try {
+                const data = JSON.parse(content)
+                if (Array.isArray(data)) {
+                        return data
+                }
+                if (Array.isArray(data.segments)) {
+                        return data.segments
+                }
+        } catch (e) {
+                console.error(e)
+        }
+        return []
+}
+
+export function parseText(content: string): Segment[] {
+        return content
+                .split(/\n/)
+                .filter((l) => l.trim())
+                .map((text, i) => ({ start: i * 2, stop: i * 2 + 2, text: text.trim() }))
 }
