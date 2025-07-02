@@ -1,11 +1,5 @@
 <p align="center">
-  <a target="blank" href="https://github.com/thewh1teagle/vibe">
-    <img
-        width="96px"
-        alt="Vibe logo"
-        src="./design/logo.png"
-    />
-  </a>
+  <img width="96px" alt="Vibe logo" src="./design/logo.png" />
 </p>
 
 <h1 align="center">Vibe - Transcribe on your own!</h1>
@@ -14,24 +8,13 @@
   <strong>⌨️ Transcribe audio / video offline using OpenAI Whisper</strong>
   <br/>
 </p>
-
-<p align="center">
-  <a target="_blank" href="https://thewh1teagle.github.io/vibe/">
-    🔗 Download Vibe
-  </a>
-    &nbsp; | &nbsp; Give it a Star ⭐ | &nbsp;
-    <a target="_blank" href="https://thewh1teagle.github.io/vibe/?action=support-vibe">Support the project 🤝</a>
-</p>
-
-<hr />
-
 ## Screenshots
 
 <p align="center">
-	<a target="_blank" href="https://thewh1teagle.github.io/vibe/">
-    	<img width=600 src="https://github.com/thewh1teagle/vibe/assets/61390950/22779ac6-9e49-4c21-b528-29647f039da2">
-	</a>
+  <img width=600 src="https://github.com/vibe/assets/61390950/22779ac6-9e49-4c21-b528-29647f039da2">
 </p>
+
+
 
 # Features 🌟
 
@@ -67,7 +50,22 @@
 `MacOS`
 `Windows`
 `Linux`
+## How to build
 
+Clone the repository and build the desktop app for Linux:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y ffmpeg libopenblas-dev pkg-config build-essential libglib2.0-dev libgobject-2.0-dev libgtk-3-dev libwebkit2gtk-4.1-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev clang cmake libssl-dev libavutil-dev libavformat-dev libavfilter-dev libavdevice-dev
+git clone https://github.com/vibe/vibe.git
+cd vibe
+bun install
+bun run scripts/pre_build.js
+cd desktop
+bunx tauri build
+```
+
+_Support for Windows and macOS will be documented later._
 # Contribute 🤝
 
 PRs are welcomed!
@@ -75,17 +73,13 @@ In addition, you're welcome to add translations.
 
 We would like to express our sincere gratitude to all the contributors.
 
-<a href="https://github.com/thewh1teagle/vibe/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=thewh1teagle/vibe" />
+<a href="graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=vibe" />
 </a>
 
 # Community
 
 [![Discord](https://img.shields.io/badge/chat-discord-7289da.svg)](https://discord.gg/EcxWSstQN8)
-
-# Roadmap 🛣️
-
-You can see the roadmap in [Vibe-Roadmap](https://github.com/users/thewh1teagle/projects/5/views/1)
 
 # Add translation 🌐
 
@@ -93,11 +87,11 @@ You can see the roadmap in [Vibe-Roadmap](https://github.com/users/thewh1teagle/
 2. Change every value in the files there, to the new language and keep the keys as is
 3. create PR / issue in Github
 
-In addition you can add translation to [Vibe website](https://thewh1teagle.github.io/vibe/) by creating new files in the `landing/static/locales`.
+In addition you can add translation to [Vibe website](/) by creating new files in the `landing/static/locales`.
 
 # Docs 📄
 
-see [Vibe Docs](https://github.com/thewh1teagle/vibe/tree/main/docs)
+see [Vibe Docs](docs)
 Check the [Subtitle Editor guide](docs/editor.md) to learn how to refine captions.
 
 # I want to know more!
@@ -106,11 +100,11 @@ Medium [post](https://medium.com/@thewh1teagle/creating-vibe-multilingual-audio-
 
 # Issue report
 
-You can open [new issue](https://github.com/thewh1teagle/vibe/issues/new?assignees=octocat&labels=bug&projects=&template=bug_report.yaml&title=[Short+title]) and it's recommend to check [debug.md](docs/debug.md) first.
+You can open [new issue](https://github.com/vibe/issues/new?assignees=octocat&labels=bug&projects=&template=bug_report.yaml&title=[Short+title]) and it's recommend to check [debug.md](docs/debug.md) first.
 
 # Privacy Policy 🔒
 
-Your privacy is important to us. Please review our [Privacy Policy](http://thewh1teagle.github.io/vibe/?action=open-privacy-policy) to understand how we handle your data.
+Your privacy is important to us. Please review our [Privacy Policy](landing/static/privacy_policy.md) to understand how we handle your data.
 
 # Credits
 
