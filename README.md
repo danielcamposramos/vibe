@@ -57,7 +57,7 @@ Clone the repository and build the desktop app for Linux:
 ```bash
 sudo apt-get update
 sudo apt-get install -y ffmpeg libopenblas-dev pkg-config build-essential libglib2.0-dev libgobject-2.0-dev libgtk-3-dev libwebkit2gtk-4.1-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev clang cmake libssl-dev libavutil-dev libavformat-dev libavfilter-dev libavdevice-dev
-git clone https://github.com/vibe/vibe.git
+git clone https://github.com/danielcamposramos/vibe.git
 cd vibe
 bun install
 bun run scripts/pre_build.js
