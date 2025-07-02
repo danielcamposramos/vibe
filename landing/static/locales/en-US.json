@@ -15,10 +15,12 @@
 	"intel": "Intel Chip",
 	"open-logs-folder": "Open Logs Folder",
 	"privacy-policy": "Privacy Policy",
-	"star-on-github": "Star On Github",
-	"support-project": "Support Vibe!",
-	"support-vibe": "Support Vibe",
-	"support-while-you-wait": "While you wait, consider supporting the Vibe project to help us grow!",
-	"title": "Transcribe. on Your Own.",
-	"your-download-is-starting": "Your download is starting..."
+        "star-on-github": "Star On Github",
+        "support-project": "Support Vibe!",
+        "support-vibe": "Support Vibe",
+        "support-while-you-wait": "While you wait, consider supporting the Vibe project to help us grow!",
+        "language": "Language",
+        "select-language": "Select Language",
+        "title": "Transcribe. on Your Own.",
+        "your-download-is-starting": "Your download is starting..."
 }
