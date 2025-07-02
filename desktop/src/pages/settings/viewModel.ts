@@ -14,8 +14,8 @@ import * as clipboard from '@tauri-apps/plugin-clipboard-manager'
 import { collectLogs, getPrettyVersion } from '~/lib/logs'
 
 async function openModelPath() {
-	let dst = await invoke<string>('get_models_folder')
-	invoke('open_path', { path: dst })
+        const dst = await invoke<string>('get_models_folder')
+        invoke('open_path', { path: dst })
 }
 
 async function openModelsUrl() {
@@ -35,8 +35,8 @@ async function reportIssue() {
 				try {
 					const parsed = JSON.parse(line) // Deserialize JSON
 					return parsed?.fields?.message || 'No message found' // Extract .message or fallback
-				} catch (e) {
-					return 'Invalid JSON' // Handle invalid JSON
+                                } catch (_e) {
+                                        return 'Invalid JSON' // Handle invalid JSON
 				}
 			})
 			.join('\n')
@@ -50,9 +50,9 @@ ${filteredLogs}
 `
 		info += `\n\n\n${templatedLogs}`
 		shell.open(await getIssueUrl(info))
-	} catch (e) {
-		console.error(e)
-		shell.open(await getIssueUrl(`Couldn't get info ${e}`))
+        } catch (_e) {
+                console.error(_e)
+                shell.open(await getIssueUrl(`Couldn't get info ${String(_e)}`))
 	}
 }
 
@@ -102,14 +102,14 @@ export function viewModel() {
 		navigate('/setup', { state: { downloadURL } })
 	}
 
-	async function loadMeta() {
-		try {
-			const prettyVersion = await getPrettyVersion()
-			setAppVersion(prettyVersion)
-		} catch (e) {
-			console.error(e)
-		}
-	}
+        async function loadMeta() {
+                try {
+                        const prettyVersion = await getPrettyVersion()
+                        setAppVersion(prettyVersion)
+                } catch (_e) {
+                        console.error(_e)
+                }
+        }
 
 	async function loadModels() {
 		const modelsFolder = await invoke<string>('get_models_folder')

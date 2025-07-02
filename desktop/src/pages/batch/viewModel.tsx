@@ -182,7 +182,7 @@ export function viewModel() {
 				})
 
 				// Calculate time
-				let total = Math.round((performance.now() - startTime) / 1000)
+                                const total = Math.round((performance.now() - startTime) / 1000)
 				console.info(`Transcribe ${file.name} took ${total} seconds.`)
 
 				let llmSegments: Segment[] | null = null
@@ -243,7 +243,7 @@ export function viewModel() {
 			webview.getCurrentWebviewWindow().unminimize()
 			webview.getCurrentWebviewWindow().setFocus()
 		}
-		let total = Math.round((performance.now() - loopStartTime) / 1000)
+                const total = Math.round((performance.now() - loopStartTime) / 1000)
 		console.info(`Transcribed ${files.length} files in ${total}`)
 	}
 

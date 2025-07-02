@@ -70,7 +70,7 @@ export default function SettingsPage({ setVisible }: SettingsPageProps) {
 					<span className="label-text">{t('common.theme')}</span>
 				</div>
 				<select
-					onChange={(e) => vm.preference.setTheme(e.target.value as any)}
+                                        onChange={(e) => vm.preference.setTheme(e.target.value as 'light' | 'dark')}
 					value={vm.preference.theme}
 					className="select select-bordered capitalize">
 					<option>{t('common.select-theme')}</option>
