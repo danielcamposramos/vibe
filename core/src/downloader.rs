@@ -49,23 +49,27 @@ impl Downloader {
             .ok_or_eyre(format!("Failed to get content length from '{}'", url))?;
         let mut file = std::fs::File::create(path.clone()).context(format!("Failed to create file {}", path.display()))?;
         let mut downloaded: u64 = 0;
-        let callback_limit = 1024 * 1024 * 2; // 1MB limit
+        let callback_limit = 1024 * 1024 * 2; // 2MB limit
         let mut callback_offset = 0;
         let mut stream = res.bytes_stream();
+        let mut aborted = false;
         while let Some(item) = stream.next().await {
             let chunk = item.context("Error while downloading file")?;
             file.write_all(&chunk)
                 .context(format!("Error while writing to file {}", path.display()))?;
-            // Check if downloaded size is a multiple of 10MB
-            if downloaded > callback_offset + callback_limit {
-                let is_abort_set = on_progress(downloaded, total_size);
-                if is_abort_set {
+            downloaded += chunk.len() as u64;
+            // Call progress callback every time we cross the limit
+            if downloaded >= callback_offset + callback_limit {
+                if on_progress(downloaded, total_size) {
+                    aborted = true;
                     break;
                 }
 
                 callback_offset = downloaded;
             }
-            downloaded += chunk.len() as u64;
+        }
+        if !aborted {
+            on_progress(downloaded, total_size);
         }
         Ok(())
     }
