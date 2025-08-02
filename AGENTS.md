@@ -13,7 +13,6 @@
 - pkg-config
 - build-essential
 - libglib2.0-dev (>= 2.80)
-- libgobject-2.0-dev (>= 2.80)
 - libgtk-3-dev
 - libwebkit2gtk-4.1-dev
 - libsoup-3.0-dev
