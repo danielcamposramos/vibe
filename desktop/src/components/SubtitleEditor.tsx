@@ -176,7 +176,8 @@ export default function SubtitleEditor({ transcript, setTranscript, videoSrc, au
 
     function updateSegments(newSegs: Segment[]) {
         setSegments(newSegs)
-        historyRef.current.push(newSegs)
+        // Store a snapshot to avoid mutating history entries when segments change
+        historyRef.current.push(newSegs.map((s) => ({ ...s })))
     }
 
     async function saveToFile() {
@@ -263,7 +264,8 @@ export default function SubtitleEditor({ transcript, setTranscript, videoSrc, au
     }, [segments])
 
     useEffect(() => {
-        historyRef.current = [segments]
+        // Initialize history with a snapshot of the initial segments
+        historyRef.current = [segments.map((s) => ({ ...s }))]
     }, [])
 
     return (
