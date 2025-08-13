@@ -37,6 +37,7 @@
     "react-router-dom": "^6.28.0",
     "tauri-plugin-keepawake-api": "^0.1.0",
     "usehooks-ts": "^3.1.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "vite-plugin-svgr": "^4.3.0"
   },
   "devDependencies": {
